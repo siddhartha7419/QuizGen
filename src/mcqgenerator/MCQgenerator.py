@@ -35,6 +35,7 @@ if NVIDIA_KEY:
         api_key=NVIDIA_KEY,
         max_tokens=2048,
         temperature=0.5,
+        timeout=180,
     )
 elif GROQ_KEY:
     # Free tier, no card needed: https://console.groq.com/keys
@@ -62,8 +63,10 @@ system_msg = SystemMessage(
 
 TEMPLATE_QUIZ_NEW = """\
 {system_msg}
+You are an experienced exam setter who writes fair multiple-choice questions for {subject} students.
 Context: {text}
-Your task is to write exactly {number} multiple-choice questions based on the above content. The questions should be appropriate for {subject} students and written in a {difficulty} difficulty.
+Your task is to write exactly {number} multiple-choice questions based ONLY on the facts stated in the context above, in a {difficulty} difficulty.
+Do not use outside knowledge. If the context does not contain enough facts for {number} different questions, write only as many good questions as the context supports (at least 1).
 Return ONLY a JSON object matching the format shown in RESPONSE_JSON below. Do not include any extra explanation.
 ### RESPONSE_JSON
 {response_json}

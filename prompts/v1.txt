@@ -1,0 +1,17 @@
+TEMPLATE_QUIZ_NEW = """\
+{system_msg}
+Context: {text}
+Your task is to write exactly {number} multiple-choice questions based on the above content. The questions should be appropriate for {subject} students and written in a {difficulty} difficulty.
+Return ONLY a JSON object matching the format shown in RESPONSE_JSON below. Do not include any extra explanation.
+### RESPONSE_JSON
+{response_json}
+"""
+
+
+TEMPLATE_REVIEW_NEW = """\
+{system_msg}
+Below is a quiz for {subject} students. Review its difficulty in no more than 50 words. If any question is not suitable, rewrite only the problem parts in a suitable difficulty.
+Quiz:
+{quiz}
+"""
+

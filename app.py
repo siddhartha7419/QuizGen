@@ -336,6 +336,10 @@ if submit_btn:
         with st.spinner("🧠 Llama 3.1 is generating your MCQs..."):
             try:
                 text = read_file(uploaded_file)
+                if not text or not text.strip():
+                    raise ValueError(
+                        "The uploaded file has no readable text (empty file or scanned/image-only PDF)."
+                    )
                 response = combined_chain(
                     {
                         "system_msg": "/no_think Answer very briefly and do not explain your reasoning.",
@@ -360,6 +364,8 @@ if submit_btn:
                 else:
                     st.error("❌ No MCQ data returned.")
 
+            except ValueError as e:
+                st.warning(f"⚠️ {e}")
             except Exception as e:
                 traceback.print_exception(type(e), e, e.__traceback__)
                 st.error(f"❌ Error generating MCQs: {type(e).__name__}: {str(e)[:400]}")
