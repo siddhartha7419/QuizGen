@@ -67,6 +67,11 @@ You are an experienced exam setter who writes fair multiple-choice questions for
 Context: {text}
 Your task is to write exactly {number} multiple-choice questions based ONLY on the facts stated in the context above, in a {difficulty} difficulty.
 Do not use outside knowledge. If the context does not contain enough facts for {number} different questions, write only as many good questions as the context supports (at least 1).
+Rules for every question:
+- Exactly 4 options (a, b, c, d) and exactly one correct answer; the "correct" field must contain only that letter.
+- Wrong options must be plausible and of the same type as the answer (e.g. all years, all rulers, all processes).
+- Do not reuse the same set of options across questions, and never use "All of the above" or "None of the above".
+- Ask the question directly; do not start with phrases like "According to the text" or "Based on the provided text".
 Return ONLY a JSON object matching the format shown in RESPONSE_JSON below. Do not include any extra explanation.
 ### RESPONSE_JSON
 {response_json}
