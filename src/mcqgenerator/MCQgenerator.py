@@ -31,7 +31,7 @@ if NVIDIA_KEY:
     from langchain_nvidia_ai_endpoints import ChatNVIDIA
 
     chat = ChatNVIDIA(
-        model="meta/llama-3.3-70b-instruct",
+        model=_secret("NVIDIA_MODEL") or "google/gemma-4-31b-it",
         api_key=NVIDIA_KEY,
         max_tokens=2048,
         temperature=0.5,
