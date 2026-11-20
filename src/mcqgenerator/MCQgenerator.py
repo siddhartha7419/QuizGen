@@ -11,23 +11,39 @@ from langchain_classic.chains import LLMChain, SequentialChain
 from langchain_core.prompts import PromptTemplate
 
 load_dotenv()
-KEY = os.getenv("HUGGING_FACE_API_KEY") or os.getenv("HF_TOKEN")
-if not KEY:
+def _secret(name):
+    val = os.getenv(name)
+    if val:
+        return val
     try:
         import streamlit as _st
-        KEY = _st.secrets.get("HUGGING_FACE_API_KEY")
+        return _st.secrets.get(name)
     except Exception:
-        KEY = None
+        return None
 
 
-llm = HuggingFaceEndpoint(
-    repo_id="meta-llama/Llama-3.3-70B-Instruct",  # newer, well-supported
-    task="conversational",
-    provider="auto",
-    max_new_tokens=512,
-    huggingfacehub_api_token=KEY,
-)
-chat = ChatHuggingFace(llm=llm, verbose=True)
+GROQ_KEY = _secret("GROQ_API_KEY")
+KEY = _secret("HUGGING_FACE_API_KEY") or _secret("HF_TOKEN")
+
+if GROQ_KEY:
+    # Free tier, no card needed: https://console.groq.com/keys
+    from langchain_groq import ChatGroq
+
+    chat = ChatGroq(
+        model="llama-3.3-70b-versatile",
+        api_key=GROQ_KEY,
+        max_tokens=2048,
+        temperature=0.5,
+    )
+else:
+    llm = HuggingFaceEndpoint(
+        repo_id="meta-llama/Llama-3.3-70B-Instruct",
+        task="conversational",
+        provider="auto",
+        max_new_tokens=512,
+        huggingfacehub_api_token=KEY,
+    )
+    chat = ChatHuggingFace(llm=llm, verbose=True)
 
 system_msg = SystemMessage(
     content="/no_think Answer very briefly and do not explain your reasoning."
