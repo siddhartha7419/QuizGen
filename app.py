@@ -394,7 +394,7 @@ if quiz_df is not None:
 
     for idx, row in quiz_df.iterrows():
         choices_html = ""
-        for choice in row["Choices"].split(" | "):
+        for choice in row["Choices"].split(" || "):
             choices_html += f'<div class="mcq-choice">{choice}</div>'
 
         st.markdown(

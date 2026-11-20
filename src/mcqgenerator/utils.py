@@ -7,10 +7,10 @@ import traceback
 def read_file(file):
     if file.name.endswith(".pdf"):
         try:
-            pdf_reader = PyPDF2.PdfFileReader(file)
+            pdf_reader = PyPDF2.PdfReader(file)
             text = ""
             for page in pdf_reader.pages:
-                text += page.extract_text()
+                text += page.extract_text() or ""
             return text
 
         except Exception as e:
@@ -25,6 +25,10 @@ def read_file(file):
 
 def get_table_data(quiz_str):
     try:
+        quiz_str = str(quiz_str).strip()
+        start, end = quiz_str.find("{"), quiz_str.rfind("}")
+        if start != -1 and end != -1:
+            quiz_str = quiz_str[start : end + 1]
         quiz_dict = json.loads(quiz_str)
         quiz_table_data = []
 
