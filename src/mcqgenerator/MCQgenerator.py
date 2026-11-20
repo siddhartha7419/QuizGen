@@ -11,7 +11,13 @@ from langchain_classic.chains import LLMChain, SequentialChain
 from langchain_core.prompts import PromptTemplate
 
 load_dotenv()
-KEY = os.getenv("HUGGING_FACE_API_KEY")
+KEY = os.getenv("HUGGING_FACE_API_KEY") or os.getenv("HF_TOKEN")
+if not KEY:
+    try:
+        import streamlit as _st
+        KEY = _st.secrets.get("HUGGING_FACE_API_KEY")
+    except Exception:
+        KEY = None
 
 
 llm = HuggingFaceEndpoint(
@@ -19,6 +25,7 @@ llm = HuggingFaceEndpoint(
     task="conversational",
     provider="auto",
     max_new_tokens=512,
+    huggingfacehub_api_token=KEY,
 )
 chat = ChatHuggingFace(llm=llm, verbose=True)
 
