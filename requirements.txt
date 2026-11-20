@@ -8,3 +8,4 @@ pandas
 python-dotenv
 PyPDF2
 langchain-groq
+langchain-nvidia-ai-endpoints

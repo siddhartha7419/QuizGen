@@ -22,10 +22,21 @@ def _secret(name):
         return None
 
 
+NVIDIA_KEY = _secret("NVIDIA_API_KEY")
 GROQ_KEY = _secret("GROQ_API_KEY")
 KEY = _secret("HUGGING_FACE_API_KEY") or _secret("HF_TOKEN")
 
-if GROQ_KEY:
+if NVIDIA_KEY:
+    # Free NVIDIA API (build.nvidia.com), OpenAI-compatible endpoint
+    from langchain_nvidia_ai_endpoints import ChatNVIDIA
+
+    chat = ChatNVIDIA(
+        model="meta/llama-3.3-70b-instruct",
+        api_key=NVIDIA_KEY,
+        max_tokens=2048,
+        temperature=0.5,
+    )
+elif GROQ_KEY:
     # Free tier, no card needed: https://console.groq.com/keys
     from langchain_groq import ChatGroq
 
