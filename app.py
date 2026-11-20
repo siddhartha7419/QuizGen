@@ -362,7 +362,7 @@ if submit_btn:
 
             except Exception as e:
                 traceback.print_exception(type(e), e, e.__traceback__)
-                st.error("❌ Error generating MCQs. Check logs for details.")
+                st.error(f"❌ Error generating MCQs: {type(e).__name__}: {str(e)[:400]}")
 
 # ============================================================
 #  RESULTS
